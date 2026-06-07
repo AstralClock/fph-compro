@@ -65,7 +65,7 @@ export default {
                 "section-alt": "hsl(var(--section-alt))",
             },
             fontFamily: {
-                sans: ["Inter", "system-ui", "sans-serif"],
+                serif: ["var(--font-playfair)", "serif"],
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -108,5 +108,8 @@ export default {
             },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"),
+        require("@tailwindcss/typography"),
+    ],
 } satisfies Config;

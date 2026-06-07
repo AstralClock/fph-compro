@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_vision_missions",
+  "info": {
+    "displayName": "vision-mission"
+  },
+  "options": {},
+  "attributes": {
+    "visionText": {
+      "type": "text"
+    },
+    "missionPoints": {
+      "type": "component",
+      "component": "sections.mission-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

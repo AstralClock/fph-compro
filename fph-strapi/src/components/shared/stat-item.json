@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_shared_stat_items",
+  "info": {
+    "displayName": "stat-item"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "iconName": {
+      "type": "enumeration",
+      "enum": [
+        "Users",
+        "Calendar",
+        "Briefcase",
+        "Award",
+        "Building2",
+        "Smile"
+      ]
+    }
+  },
+  "config": {}
+}

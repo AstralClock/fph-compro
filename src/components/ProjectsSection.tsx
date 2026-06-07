@@ -1,6 +1,11 @@
+"use client";
+
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Project } from "@/types/strapi";
+import { getStrapiMedia } from "@/lib/api";
+import Link from "next/link";
 
 const projects = [
   {
@@ -26,8 +31,14 @@ const projects = [
   },
 ];
 
-export function ProjectsSection() {
+interface ProjectsSectionProps {
+  data?: Project[] | null;
+}
+
+export function ProjectsSection({ data }: ProjectsSectionProps) {
   const { ref, isVisible } = useScrollAnimation<HTMLDivElement>();
+
+  const displayProjects = data && data.length > 0 ? data : projects as any;
 
   return (
     <section id="projects" className="py-24 bg-background" ref={ref}>
@@ -50,30 +61,31 @@ export function ProjectsSection() {
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <Card
-              key={project.title}
-              className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 opacity-0"
-              style={{
-                animation: isVisible
-                  ? `fadeUp 0.6s ease-out ${0.1 + index * 0.15}s forwards`
-                  : "none",
-              }}
-            >
-              <AspectRatio ratio={16 / 9}>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </AspectRatio>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground">{project.description}</p>
-              </CardContent>
-            </Card>
+          {displayProjects.map((project: any, index: number) => (
+            <Link href={`/projects/${project.slug || '#'}`} key={project.title}>
+              <Card
+                className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 opacity-0 cursor-pointer h-full"
+                style={{
+                  animation: isVisible
+                    ? `fadeUp 0.6s ease-out ${0.1 + index * 0.15}s forwards`
+                    : "none",
+                }}
+              >
+                <AspectRatio ratio={16 / 9}>
+                  <img
+                    src={project.coverImage ? getStrapiMedia(project.coverImage.url) : project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </AspectRatio>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground line-clamp-3">{project.summary || project.description}</p>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>

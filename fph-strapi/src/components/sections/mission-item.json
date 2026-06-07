@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sections_mission_items",
+  "info": {
+    "displayName": "mission-item"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -1,7 +1,10 @@
+"use client";
+
 import { Compass, Check } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { VisionMissionComponent } from "@/types/strapi";
 
-const missionPoints = [
+const fallbackMissionPoints = [
   "Delivering high-quality professional services that exceed expectations",
   "Developing innovative solutions tailored to each client's unique needs",
   "Building long-term partnerships based on trust and mutual success",
@@ -9,8 +12,20 @@ const missionPoints = [
   "Fostering a culture of continuous improvement and excellence",
 ];
 
-export function VisionMissionSection() {
+interface VisionMissionSectionProps {
+  data?: VisionMissionComponent;
+}
+
+export function VisionMissionSection({ data }: VisionMissionSectionProps) {
   const { ref, isVisible } = useScrollAnimation<HTMLDivElement>();
+
+  const visionTitle = "Our Vision";
+  const visionDescription = data?.visionText || 
+    "To be a premier strategic solutions provider, recognized for driving sustainable growth and fostering innovation across industries. We envision a future where every organization we partner with achieves unprecedented levels of success and makes a lasting positive impact on their stakeholders and communities.";
+
+  const missionPoints = data?.missionPoints && data.missionPoints.length > 0
+    ? data.missionPoints.map(mp => mp.text)
+    : fallbackMissionPoints;
 
   return (
     <section id="vision" className="py-24 bg-section-alt" ref={ref}>
@@ -28,15 +43,11 @@ export function VisionMissionSection() {
                 <Compass className="h-8 w-8 text-gold" />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Our Vision
+                {visionTitle}
               </h2>
             </div>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              To be a premier strategic solutions provider, recognized for
-              driving sustainable growth and fostering innovation across
-              industries. We envision a future where every organization we
-              partner with achieves unprecedented levels of success and makes a
-              lasting positive impact on their stakeholders and communities.
+              {visionDescription}
             </p>
             <div className="mt-8 h-1 w-24 bg-gold rounded-full" />
           </div>

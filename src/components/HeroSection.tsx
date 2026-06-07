@@ -1,13 +1,25 @@
+"use client";
+
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { HeroComponent } from "@/types/strapi";
+import { getStrapiMedia } from "@/lib/api";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  data?: HeroComponent;
+}
+
+export function HeroSection({ data }: HeroSectionProps) {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const bgUrl = data?.backgroundImage?.url
+    ? getStrapiMedia(data.backgroundImage.url)
+    : "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80";
 
   return (
     <section
@@ -18,7 +30,7 @@ export function HeroSection() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('${bgUrl}')`,
         }}
       />
 
@@ -27,18 +39,17 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Tagline */}
           <p className="text-gold font-semibold tracking-widest text-sm md:text-base uppercase animate-fade-up">
-            Smart Business Solutions
+            {data?.tagline || "Smart Business Solutions"}
           </p>
 
           {/* Main Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight animate-fade-up animation-delay-100">
-            Driving Strategic Transformation and Sustainable Growth
+            {data?.headline || "Driving Strategic Transformation and Sustainable Growth"}
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto animate-fade-up animation-delay-200">
-            We provide innovative solutions to navigate the complex business
-            landscape and unlock your organization's full potential.
+            {data?.subtext || "We provide innovative solutions to navigate the complex business landscape and unlock your organization's full potential."}
           </p>
 
           {/* CTA Buttons */}
@@ -61,14 +72,6 @@ export function HeroSection() {
             </Button>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <button
-          onClick={() => scrollToSection("#stats")}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-primary-foreground/60 hover:text-primary-foreground animate-bounce transition-colors"
-        >
-          <ChevronDown className="h-8 w-8" />
-        </button>
       </div>
     </section>
   );

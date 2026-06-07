@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_office_locations",
+  "info": {
+    "displayName": "officeLocation"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "mapsUrl": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

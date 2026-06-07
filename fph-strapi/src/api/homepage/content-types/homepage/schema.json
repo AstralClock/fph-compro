@@ -1,0 +1,58 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stats": {
+      "type": "component",
+      "component": "shared.stat-item",
+      "repeatable": true
+    },
+    "hero": {
+      "type": "component",
+      "component": "sections.hero",
+      "repeatable": false
+    },
+    "about": {
+      "type": "component",
+      "component": "sections.about",
+      "repeatable": false
+    },
+    "visionMission": {
+      "type": "component",
+      "component": "sections.vision-mission",
+      "repeatable": false
+    },
+    "trustedClients": {
+      "type": "component",
+      "component": "sections.trusted-clients",
+      "repeatable": true
+    },
+    "clientsTitle": {
+      "type": "string"
+    },
+    "clientsDescription": {
+      "type": "text"
+    },
+    "projectsTitle": {
+      "type": "string"
+    },
+    "projectsDescription": {
+      "type": "text"
+    },
+    "teamTitle": {
+      "type": "string"
+    },
+    "teamDescription": {
+      "type": "text"
+    }
+  }
+}

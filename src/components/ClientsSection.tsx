@@ -1,17 +1,37 @@
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Quote } from "lucide-react";
+"use client";
 
-const clients = [
-  "Client Alpha Corp",
-  "Beta Industries",
-  "Gamma Holdings",
-  "Delta Group",
-  "Epsilon Partners",
-  "Zeta Ventures",
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { TrustedClientItem } from "@/types/strapi";
+import { getStrapiMedia } from "@/lib/api";
+import Image from "next/image";
+
+const fallbackClients = [
+  { name: "Client Alpha Corp", logoUrl: null },
+  { name: "Beta Industries", logoUrl: null },
+  { name: "Gamma Holdings", logoUrl: null },
+  { name: "Delta Group", logoUrl: null },
+  { name: "Epsilon Partners", logoUrl: null },
+  { name: "Zeta Ventures", logoUrl: null },
 ];
 
-export function ClientsSection() {
+interface ClientsSectionProps {
+  title?: string;
+  description?: string;
+  data?: TrustedClientItem[];
+}
+
+export function ClientsSection({ title, description, data }: ClientsSectionProps) {
   const { ref, isVisible } = useScrollAnimation<HTMLDivElement>();
+
+  const clients = data && data.length > 0
+    ? data.map(client => ({
+        name: client.title || "Client",
+        logoUrl: client.logos && client.logos.length > 0 ? getStrapiMedia(client.logos[0].url) : null,
+      }))
+    : fallbackClients;
+
+  const sectionTitle = title || "Trusted by Industry Leaders";
+  const sectionDesc = description || "We've partnered with organizations across diverse sectors to deliver transformative results.";
 
   return (
     <section className="py-20 bg-background overflow-hidden" ref={ref}>
@@ -24,11 +44,10 @@ export function ClientsSection() {
           }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Trusted by Industry Leaders
+            {sectionTitle}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We've partnered with organizations across diverse sectors to deliver
-            transformative results.
+            {sectionDesc}
           </p>
         </div>
 
@@ -40,15 +59,49 @@ export function ClientsSection() {
           }}
         >
           <div className="flex overflow-hidden">
-            <div className="flex animate-marquee">
-              {[...clients, ...clients].map((client, index) => (
+            <div className="flex animate-marquee shrink-0">
+              {clients.map((client, index) => (
                 <div
-                  key={index}
-                  className="flex-shrink-0 mx-8 px-8 py-4 bg-section-alt rounded-lg"
+                  key={`marquee-1-${index}`}
+                  className="flex-shrink-0 mx-8 px-8 py-4 bg-section-alt rounded-lg flex items-center justify-center min-w-[200px]"
                 >
-                  <span className="text-lg font-semibold text-muted-foreground whitespace-nowrap">
-                    {client}
-                  </span>
+                  {client.logoUrl ? (
+                    <Image 
+                      src={client.logoUrl} 
+                      alt={client.name} 
+                      width={160}
+                      height={60}
+                      className="max-h-12 w-auto object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                      unoptimized
+                    />
+                  ) : (
+                    <span className="text-lg font-semibold text-muted-foreground whitespace-nowrap">
+                      {client.name}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex animate-marquee shrink-0" aria-hidden="true">
+              {clients.map((client, index) => (
+                <div
+                  key={`marquee-2-${index}`}
+                  className="flex-shrink-0 mx-8 px-8 py-4 bg-section-alt rounded-lg flex items-center justify-center min-w-[200px]"
+                >
+                  {client.logoUrl ? (
+                    <Image 
+                      src={client.logoUrl} 
+                      alt={client.name} 
+                      width={160}
+                      height={60}
+                      className="max-h-12 w-auto object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                      unoptimized
+                    />
+                  ) : (
+                    <span className="text-lg font-semibold text-muted-foreground whitespace-nowrap">
+                      {client.name}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -56,30 +109,6 @@ export function ClientsSection() {
           {/* Fade edges */}
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-        </div>
-
-        {/* Testimonial */}
-        <div
-          className="max-w-3xl mx-auto text-center opacity-0"
-          style={{
-            animation: isVisible ? "fadeUp 0.6s ease-out 0.4s forwards" : "none",
-          }}
-        >
-          <Quote className="h-12 w-12 text-gold/30 mx-auto mb-6" />
-          <blockquote className="text-xl md:text-2xl text-foreground italic leading-relaxed mb-6">
-            "Fortis Prima Hanami transformed our approach to business strategy.
-            Their insights and dedication helped us achieve growth we never
-            thought possible. A truly invaluable partnership."
-          </blockquote>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-              <span className="text-lg font-bold text-primary">JD</span>
-            </div>
-            <div className="text-left">
-              <p className="font-semibold text-foreground">John Doe</p>
-              <p className="text-sm text-muted-foreground">CEO, Alpha Corp</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
