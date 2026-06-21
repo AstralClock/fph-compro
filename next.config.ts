@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Matikan pengecekan TypeScript pas build
+ // output: 'export', 
+ // Matikan pengecekan TypeScript pas build
   typescript: {
     ignoreBuildErrors: true,
   },
