@@ -68,13 +68,24 @@ export function getStrapiMedia(url: string | null | undefined): string | null {
     return null;
   }
 
-  // Return the url directly if it's an absolute url
+  // Return the url directly if it's an absolute external url (non-Strapi)
   if (url.startsWith("http") || url.startsWith("//")) {
+    // If the URL points to our Strapi server, rewrite it to use the proxy
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://103.93.134.74:1337";
+    if (url.startsWith(strapiUrl)) {
+      // Replace the Strapi base URL with our proxy path
+      return url.replace(strapiUrl, "").replace(/^\/uploads\//, "/strapi-uploads/");
+    }
     return url;
   }
 
-  // Otherwise, prefix it with the Strapi URL
-  return `${getStrapiURL()}${url}`;
+  // For relative paths like /uploads/image.jpg, use the proxy path
+  if (url.startsWith("/uploads/")) {
+    return url.replace("/uploads/", "/strapi-uploads/");
+  }
+
+  // Fallback: prefix with proxy path
+  return `/strapi-uploads${url.startsWith("/") ? url : `/${url}`}`;
 }
 
 export async function getHomepageData() {
