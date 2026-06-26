@@ -7,7 +7,7 @@ import { Homepage, Global, Testimonial, Project, StrapiResponse, TeamMember } fr
  * @returns Full Strapi URL
  */
 export function getStrapiURL(path = "") {
-  return `${process.env.NEXT_PUBLIC_STRAPI_URL || "http://103.93.134.74:1337"
+  return `${process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.fortisprimahanami.id"
     }${path}`;
 }
 
@@ -71,7 +71,7 @@ export function getStrapiMedia(url: string | null | undefined): string | null {
   // Return the url directly if it's an absolute external url (non-Strapi)
   if (url.startsWith("http") || url.startsWith("//")) {
     // If the URL points to our Strapi server, rewrite it to use the proxy
-    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://103.93.134.74:1337";
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.fortisprimahanami.id";
     if (url.startsWith(strapiUrl)) {
       // Replace the Strapi base URL with our proxy path
       return url.replace(strapiUrl, "").replace(/^\/uploads\//, "/strapi-uploads/");

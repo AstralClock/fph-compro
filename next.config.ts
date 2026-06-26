@@ -21,9 +21,8 @@ const nextConfig: NextConfig = {
         pathname: "/uploads/**",
       },
       {
-        protocol: "http",
-        hostname: "103.93.134.74",
-        port: "1337",
+        protocol: "https",
+        hostname: "api.fortisprimahanami.id",
         pathname: "/uploads/**",
       },
     ],
@@ -31,7 +30,7 @@ const nextConfig: NextConfig = {
   // Proxy /strapi-uploads/* ke Strapi internal supaya browser tidak langsung
   // akses HTTP Strapi (yang error kalau lewat Cloudflare HTTPS)
   async rewrites() {
-    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://127.0.0.1:1337";
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.fortisprimahanami.id";
     return [
       {
         source: "/strapi-uploads/:path*",
